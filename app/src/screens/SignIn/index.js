@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState} from "react";
+import { useNavigation } from "@react-navigation/native";
 import { Text } from "react-native";
 import { 
     Container,
@@ -18,21 +19,48 @@ import EmailIcon from "../../assets/email.svg"
 import LockIcon from "../../assets/lock.svg"
 
 export default () => {
+
+    const navigation = useNavigation();
+
+    const [emailField, setEmailField] = useState("");
+    const [passwordField, setPasswordField] = useState("");
+
+    const handleSignClick = () => {
+
+    }
+
+    const handleMessageButtonClick = () => {
+        navigation.reset({
+            routes: [{name: "SignUp"}]
+        });
+    }
+
     return (
         <Container>
             <BarberLogo width="100%" height="160" />
 
             <InputArea>
                 
-                <SignInput IconSvg={EmailIcon} />
-                <SignInput IconSvg={LockIcon} />
+                <SignInput 
+                    IconSvg={EmailIcon}
+                    placeholder="Digite seu E-mail"
+                    value={emailField}
+                    onChangeText={t=>setEmailField(t)} // Possibilita que o campo possa ser alterado
+                />
+                <SignInput
+                    IconSvg={LockIcon}
+                    placeholder="Digite sua senha"
+                    value={passwordField}
+                    onChangeText={t=>setPasswordField(t)} // Possibilita que o campo possa ser alterado
+                    password={true}
+                />
 
-                <CustomButton>
+                <CustomButton onPress={handleSignClick}>
                     <CustomButtonText>LOGIN</CustomButtonText>
                 </CustomButton>
             </InputArea>
 
-            <SignMessageButton>
+            <SignMessageButton onPress={handleMessageButtonClick}>
                 <SignMessageButtonText>Ainda não possui uma conta?</SignMessageButtonText>
                 <SignMessageButtonTextBold>Cadastre-se</SignMessageButtonTextBold>
             </SignMessageButton>
