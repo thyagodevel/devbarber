@@ -1,6 +1,8 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import CustomTabBar from "../components/CustomTabBar";
+
 import Home from "../screens/Home";
 import Search from "../screens/Search";
 import Appointments from "../screens/Appointments";
@@ -14,6 +16,7 @@ export default () => (
         screenOptions={{ //Esconde o conteudo da tela (Cabeçalho)
             headerShown: false //Desativa o cabeçalho da tela
         }}
+        tabBar={props =><CustomTabBar {...props} />} // Tira a TabBar original e coloca a que eu criei em components importei aqui 
     >
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Search" component={Search} />
