@@ -37,5 +37,9 @@ export default {
         const json = await req.json();
         return json;
     },
+    getBarbers:async () => {
+        
+        const req = await fetch(`${BASE_API}/barbers?token=${token}`);
+    }
 
 }
