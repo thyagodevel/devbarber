@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Platform } from "react-native"; // Informacoes da plataforma
 import { useNavigation } from "@react-navigation/native"; // navegar entre as telas
 import { request, PERMISSIONS } from "react-native-permissions"; // pedir permissoes
 import Geolocation from "@react-native-community/geolocation"; // pegar localizacao
+
+import Api from "../../Api";
 
 import {
     Container,
@@ -16,10 +18,12 @@ import {
     LocationInput,
     LocationFinder,
 
-    loadingIcon,
     LoadingIcon,
+    ListArea,
 
 } from "./styles";
+
+import BarberItem from "../../components/BarberItem";
 
 import SearchIcon from "../../assets/search.svg";
 import MyLocationIcon from "../../assets/my_location.svg";
@@ -57,8 +61,25 @@ export default () => {
     }
 
     const getBarbers = async () => {
-        
+        setLoading(true);
+        setList([]);
+
+        let res = await Api.getBarbers();
+        if (res.error == "") {
+            if (res.loc) {
+                setLocationText(res.loc);
+            }
+            setList(res.data);
+        } else {
+            alert("Erro: " + res.error);
+        }
+
+        setLoading(false);
     }
+
+    useEffect(() => {
+        getBarbers();
+    }, []);
 
     return (
         <Container>
@@ -85,7 +106,13 @@ export default () => {
                 {loading &&
                     <LoadingIcon  size="large" color="#FFFFFF" />
                 }
-                
+
+                <ListArea>
+                    {list.map((item, k) => (
+                        <BarberItem key={k} data={item} />
+                    ))}
+                </ListArea>
+
                  
             </Scroller>
         </Container>
